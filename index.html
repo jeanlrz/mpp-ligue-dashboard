@@ -1122,7 +1122,9 @@ function renderLineChart(svgId, legendId, mode){
       const cy = parseFloat(dot.getAttribute("cy"));
       const label = mode === "rank" ? `#${dot.dataset.value}` : dot.dataset.value;
       tooltip.innerHTML = `${dot.dataset.name} — ${dot.dataset.date} : <b>${label}</b>`;
-      tooltip.style.left = cx + "px";
+      const half = tooltip.offsetWidth / 2;
+      const clampedX = Math.min(Math.max(cx, half), W - half);
+      tooltip.style.left = clampedX + "px";
       tooltip.style.top = (cy - 8) + "px";
       tooltip.classList.add("show");
     });
