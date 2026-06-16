@@ -1125,7 +1125,13 @@ function renderLineChart(svgId, legendId, mode){
       const half = tooltip.offsetWidth / 2;
       const clampedX = Math.min(Math.max(cx, half), W - half);
       tooltip.style.left = clampedX + "px";
-      tooltip.style.top = (cy - 8) + "px";
+      if(cy - 8 - tooltip.offsetHeight < 0){
+        tooltip.style.top = (cy + 8) + "px";
+        tooltip.style.transform = "translate(-50%, 0)";
+      } else {
+        tooltip.style.top = (cy - 8) + "px";
+        tooltip.style.transform = "translate(-50%, -100%)";
+      }
       tooltip.classList.add("show");
     });
     dot.addEventListener("mouseleave", ()=>{
