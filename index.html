@@ -45,22 +45,22 @@ const LEAGUE_DATA = {
 /* Détail match par match — un point par joueur, MÊME ORDRE que LEAGUE_DATA.players.
    Ajouter une ligne ici à chaque nouveau match joué. */
 const MATCHES_PLAYED = [
-  { date: "2026-06-11", label: "Mexique - Afrique du Sud",   score: "2-0", points: [49,49,69,69,69,49,0,69,49,49,49,49,49,49,69,0] },
-  { date: "2026-06-11", label: "Corée du Sud - Tchéquie",    score: "2-1", points: [0,96,0,0,0,0,96,96,0,0,0,0,0,0,0,0] },
-  { date: "2026-06-12", label: "Canada - Bosnie",            score: "1-1", points: [0,0,0,0,0,137,0,0,0,0,0,0,0,0,0,0] },
-  { date: "2026-06-12", label: "USA - Paraguay",             score: "4-1", points: [74,74,0,0,0,0,74,0,0,74,74,0,74,74,74,0] },
-  { date: "2026-06-13", label: "Qatar - Suisse",             score: "1-1", points: [161,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] },
-  { date: "2026-06-13", label: "Brésil - Maroc",             score: "1-1", points: [0,0,122,0,142,0,0,0,0,0,0,0,0,0,0,0] },
-  { date: "2026-06-13", label: "Haïti - Écosse",             score: "0-1", points: [44,94,44,44,44,44,44,44,44,44,44,0,0,44,0,0] },
-  { date: "2026-06-13", label: "Australie - Turquie",        score: "2-0", points: [0,0,0,0,0,0,0,0,0,0,0,126,0,0,0,0] },
-  { date: "2026-06-14", label: "Allemagne - Curaçao",        score: "7-1", points: [15,0,15,15,15,15,15,15,15,15,15,15,0,15,15,15] },
-  { date: "2026-06-14", label: "Pays-Bas - Japon",           score: "2-2", points: [0,0,135,115,115,0,0,0,0,0,0,0,0,0,0,0] },
-  { date: "2026-06-14", label: "Côte d'Ivoire - Équateur",   score: "1-0", points: [108,138,0,108,108,138,108,108,108,0,0,108,138,0,0,0] },
-  { date: "2026-06-14", label: "Suède - Tunisie",            score: "5-1", points: [72,72,72,0,0,72,72,72,72,72,72,72,72,0,0,0] },
-  { date: "2026-06-15", label: "Espagne - Cap-Vert",         score: "0-0", points: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] },
-  { date: "2026-06-15", label: "Belgique - Égypte",          score: "1-1", points: [0,0,142,0,0,0,0,0,0,0,0,0,0,0,0,0] },
-  { date: "2026-06-15", label: "Arabie Saoudite - Uruguay",  score: "1-1", points: [145,0,0,145,0,0,0,0,0,145,0,0,0,0,0,0] },
-  { date: "2026-06-15", label: "Iran - Nouvelle-Zélande",    score: "2-2", points: [0,116,0,0,0,0,0,0,116,0,116,0,0,116,0,0] }
+  { date: "2026-06-11", label: "Mexique - Afrique du Sud",   score: "2-0", points: [49,49,69,69,69,49,0,69,49,49,49,49,49,49,69,0], exact: 69 },
+  { date: "2026-06-11", label: "Corée du Sud - Tchéquie",    score: "2-1", points: [0,96,0,0,0,0,96,96,0,0,0,0,0,0,0,0], exact: null },
+  { date: "2026-06-12", label: "Canada - Bosnie",            score: "1-1", points: [0,0,0,0,0,137,0,0,0,0,0,0,0,0,0,0], exact: 137 },
+  { date: "2026-06-12", label: "USA - Paraguay",             score: "4-1", points: [74,74,0,0,0,0,74,0,0,74,74,0,74,74,74,0], exact: null },
+  { date: "2026-06-13", label: "Qatar - Suisse",             score: "1-1", points: [161,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], exact: 161 },
+  { date: "2026-06-13", label: "Brésil - Maroc",             score: "1-1", points: [0,0,122,0,142,0,0,0,0,0,0,0,0,0,0,0], exact: 142 },
+  { date: "2026-06-13", label: "Haïti - Écosse",             score: "0-1", points: [44,94,44,44,44,44,44,44,44,44,44,0,0,44,0,0], exact: 94 },
+  { date: "2026-06-13", label: "Australie - Turquie",        score: "2-0", points: [0,0,0,0,0,0,0,0,0,0,0,126,0,0,0,0], exact: null },
+  { date: "2026-06-14", label: "Allemagne - Curaçao",        score: "7-1", points: [15,0,15,15,15,15,15,15,15,15,15,15,0,15,15,15], exact: null },
+  { date: "2026-06-14", label: "Pays-Bas - Japon",           score: "2-2", points: [0,0,135,115,115,0,0,0,0,0,0,0,0,0,0,0], exact: 135 },
+  { date: "2026-06-14", label: "Côte d'Ivoire - Équateur",   score: "1-0", points: [108,138,0,108,108,138,108,108,108,0,0,108,138,0,0,0], exact: 138 },
+  { date: "2026-06-14", label: "Suède - Tunisie",            score: "5-1", points: [72,72,72,0,0,72,72,72,72,72,72,72,72,0,0,0], exact: null },
+  { date: "2026-06-15", label: "Espagne - Cap-Vert",         score: "0-0", points: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], exact: null },
+  { date: "2026-06-15", label: "Belgique - Égypte",          score: "1-1", points: [0,0,142,0,0,0,0,0,0,0,0,0,0,0,0,0], exact: 142 },
+  { date: "2026-06-15", label: "Arabie Saoudite - Uruguay",  score: "1-1", points: [145,0,0,145,0,0,0,0,0,145,0,0,0,0,0,0], exact: 145 },
+  { date: "2026-06-15", label: "Iran - Nouvelle-Zélande",    score: "2-2", points: [0,116,0,0,0,0,0,0,116,0,116,0,0,116,0,0], exact: null }
 ];
 
 /* Calendrier à venir (heure française). Complète au fur et à mesure des journées. */
@@ -687,6 +687,7 @@ table.data-table td.m-score{
   color: var(--gold);
 }
 table.data-table td.pos{ color: var(--up); font-weight:700; }
+table.data-table td.exact{ color: var(--violet); font-weight:700; }
 table.data-table tbody tr:hover{ background: rgba(127,127,127,0.06); }
 table.data-table tbody tr:last-child td{ border-bottom:none; }
 
@@ -1081,7 +1082,10 @@ function renderMatchs(){
     + DATA.players.map(p=>`<th>${p.name}</th>`).join("") + '</tr></thead><tbody>';
   MATCHES_PLAYED.forEach(m=>{
     html += '<tr><td>'+formatShortDate(m.date)+'</td><td class="m-label">'+m.label+'</td><td class="m-score">'+m.score+'</td>'
-      + m.points.map(v => `<td class="${v>0?'pos':''}">${v>0?v:'–'}</td>`).join("") + '</tr>';
+      + m.points.map(v => {
+          const cls = v>0 ? (m.exact && v===m.exact ? 'exact' : 'pos') : '';
+          return `<td class="${cls}">${v>0?v:'–'}</td>`;
+        }).join("") + '</tr>';
   });
   html += '</tbody></table>';
   document.getElementById("matchsTable").innerHTML = html;
