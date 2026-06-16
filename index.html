@@ -533,6 +533,7 @@ h1.title{
   gap: 10px;
   min-width:0;
 }
+.avatar-wrap{ width:32px; height:32px; flex-shrink:0; display:inline-flex; }
 .avatar{
   width: 32px; height:32px;
   border-radius: 50%;
@@ -543,6 +544,7 @@ h1.title{
   color:#0a0f0a;
   background: linear-gradient(160deg, var(--av-c1,#8fa28e), var(--av-c2,#5a6b58));
 }
+img.avatar{ object-fit: cover; }
 .pname-cell .nm{
   font-size: 17px;
   font-weight:600;
@@ -857,6 +859,35 @@ function computeFrame(){
 }
 
 function initials(name){ return name.slice(0,2).toUpperCase(); }
+
+const AVATARS = {
+  Maxime: "avatars/maxime.jpg",
+  Gabriel: "avatars/gabriel.jpg",
+  Jean: "avatars/jean.jpg",
+  Paul: "avatars/paul.png",
+  Alban: "avatars/alban.jpg",
+  Cassandra: "avatars/cassandra.png",
+  Lola: "avatars/lola.jpg",
+  Dorian: "avatars/dorian.png",
+  Candice: "avatars/candice.jpg",
+  Auriane: "avatars/auriane.png",
+  Romane: "avatars/romane.jpg",
+  Clara: "avatars/clara.jpg",
+  David: "avatars/david.jpg",
+  Marine: "avatars/marine.jpg",
+  Justine: "avatars/justine.png",
+  Morgane: "avatars/morgane.jpg"
+};
+
+function avatarHtml(p){
+  const src = AVATARS[p.name];
+  const fallback = `<div class="avatar avatar-fallback" style="--av-c1:${p.color}; --av-c2:${p.color}99">${initials(p.name)}</div>`;
+  if(!src) return fallback;
+  return `<span class="avatar-wrap">
+    <img class="avatar" src="${src}" alt="${p.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="avatar avatar-fallback" style="display:none; --av-c1:${p.color}; --av-c2:${p.color}99">${initials(p.name)}</div>
+  </span>`;
+}
 function pad(n){ return String(n).padStart(2,'0'); }
 
 /* ---------- THEME ---------- */
@@ -1020,7 +1051,7 @@ function renderBoard(players){
     <div class="row" data-rank="${p.rank}" data-name="${p.name}" style="animation-delay:${i*0.035}s">
       <div class="rank-badge">${p.rank}</div>
       <div class="pname-cell">
-        <div class="avatar" style="--av-c1:${p.color}; --av-c2:${p.color}99">${initials(p.name)}</div>
+        ${avatarHtml(p)}
         <div class="nm">${p.name}</div>
       </div>
       <div class="stat">${p.br}</div>
