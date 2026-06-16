@@ -316,11 +316,16 @@ h1.title{
   margin-top:1px;
 }
 .nm-empty{ font-family:'Anton', sans-serif; font-size:18px; color:var(--text-dim); }
+.nm-live-right{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
 .nm-score-live{
   font-family:'Anton', sans-serif;
   font-size: 28px;
   color: var(--up);
-  margin-top: 4px;
 }
 
 .next-match.is-live{
@@ -978,10 +983,12 @@ function renderNextMatch(){
         <div>
           <div class="nm-label live"><span class="live-dot"></span>En cours &middot; Groupe ${live.group}</div>
           <div class="nm-teams">${live.label}</div>
-          ${scoreLine}
           <div class="nm-time">Coup d'envoi à ${live.d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}</div>
         </div>
-        <div class="nm-live-clock"><span>${clockValue}</span><label>${clockLabel}</label></div>`;
+        <div class="nm-live-right">
+          ${scoreLine}
+          <div class="nm-live-clock"><span>${clockValue}</span><label>${clockLabel}</label></div>
+        </div>`;
       return true;
     }
     card.classList.remove("is-live");
