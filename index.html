@@ -619,6 +619,26 @@ h1.title{
   fill: var(--text-faint);
 }
 .grid-line{ stroke: var(--line); stroke-width:1; }
+.chart-dot{ cursor: pointer; }
+.chart-wrap{ position: relative; }
+.chart-tooltip{
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface, #1c1c1c);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  box-shadow: var(--shadow-deep);
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.12s;
+  z-index: 5;
+}
+.chart-tooltip.show{ opacity: 1; }
+.chart-tooltip b{ font-weight:700; }
 
 .legend{
   display:flex;
@@ -1012,6 +1032,23 @@ function renderBoard(players){
 }
 
 /* ---------- CHARTS (génériques : rang ou points) ---------- */
+function niceTicks(maxValue, count){
+  if(maxValue <= 0) return [0];
+  const rawStep = maxValue / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const norm = rawStep / mag;
+  let niceNorm;
+  if(norm <= 1) niceNorm = 1;
+  else if(norm <= 2) niceNorm = 2;
+  else if(norm <= 5) niceNorm = 5;
+  else niceNorm = 10;
+  const step = niceNorm * mag;
+  const niceMax = Math.ceil(maxValue / step) * step;
+  const ticks = [];
+  for(let v=0; v<=niceMax + step/2; v+=step) ticks.push(Math.round(v));
+  return ticks;
+}
+
 function renderLineChart(svgId, legendId, mode){
   const svg = document.getElementById(svgId);
   const wrap = svg.parentElement;
@@ -1022,7 +1059,7 @@ function renderLineChart(svgId, legendId, mode){
   const H = 360;
   const padL = 40, padR = 20, padT = 20, padB = 36;
 
-  let seriesByDate, yMin, yMax, invert;
+  let seriesByDate, yMin, yMax, invert, pointTicks;
   if(mode === "rank"){
     seriesByDate = [];
     for(let d=0; d<nDates; d++) seriesByDate.push(rankOf(DATA.players.map(p => p.history[d])));
@@ -1031,7 +1068,9 @@ function renderLineChart(svgId, legendId, mode){
     seriesByDate = [];
     for(let d=0; d<nDates; d++) seriesByDate.push(DATA.players.map(p => p.history[d]));
     const flat = seriesByDate.flat();
-    yMin = 0; yMax = Math.max(...flat);
+    yMin = 0;
+    pointTicks = niceTicks(Math.max(...flat), 4);
+    yMax = pointTicks[pointTicks.length - 1];
     invert = false;
   }
 
@@ -1048,7 +1087,7 @@ function renderLineChart(svgId, legendId, mode){
   let gridLines = "";
   const ticks = mode === "rank"
     ? [1, Math.round(n*0.25), Math.round(n*0.5), Math.round(n*0.75), n]
-    : [yMin, Math.round(yMax*0.25), Math.round(yMax*0.5), Math.round(yMax*0.75), yMax];
+    : pointTicks;
   [...new Set(ticks)].forEach(v=>{
     gridLines += `<line class="grid-line" x1="${padL}" y1="${y(v)}" x2="${W-padR}" y2="${y(v)}"/>`;
     gridLines += `<text class="axis-label" x="6" y="${y(v)+4}">${v}</text>`;
@@ -1065,11 +1104,32 @@ function renderLineChart(svgId, legendId, mode){
     const pts = seriesByDate.map((row, d) => `${x(d)},${y(row[pi])}`).join(" ");
     lines += `<polyline class="chart-line" data-name="${p.name}" points="${pts}" stroke="${color}"/>`;
     seriesByDate.forEach((row,d)=>{
-      dots += `<circle class="chart-dot" data-name="${p.name}" cx="${x(d)}" cy="${y(row[pi])}" r="3.2" fill="${color}"/>`;
+      dots += `<circle class="chart-dot" data-name="${p.name}" data-value="${row[pi]}" data-date="${DATA.dates[d]}" cx="${x(d)}" cy="${y(row[pi])}" r="3.2" fill="${color}"/>`;
     });
   });
 
   svg.innerHTML = gridLines + dateLabels + lines + dots;
+
+  let tooltip = wrap.querySelector(".chart-tooltip");
+  if(!tooltip){
+    tooltip = document.createElement("div");
+    tooltip.className = "chart-tooltip";
+    wrap.appendChild(tooltip);
+  }
+  svg.querySelectorAll(".chart-dot").forEach(dot=>{
+    dot.addEventListener("mouseenter", ()=>{
+      const cx = parseFloat(dot.getAttribute("cx"));
+      const cy = parseFloat(dot.getAttribute("cy"));
+      const label = mode === "rank" ? `#${dot.dataset.value}` : dot.dataset.value;
+      tooltip.innerHTML = `${dot.dataset.name} — ${dot.dataset.date} : <b>${label}</b>`;
+      tooltip.style.left = cx + "px";
+      tooltip.style.top = (cy - 8) + "px";
+      tooltip.classList.add("show");
+    });
+    dot.addEventListener("mouseleave", ()=>{
+      tooltip.classList.remove("show");
+    });
+  });
 
   const legend = document.getElementById(legendId);
   legend.innerHTML = DATA.players.map((p,i) => `
