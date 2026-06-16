@@ -268,6 +268,12 @@ h1.title{
   margin-top:1px;
 }
 .nm-empty{ font-family:'Anton', sans-serif; font-size:18px; color:var(--text-dim); }
+.nm-score-live{
+  font-family:'Anton', sans-serif;
+  font-size: 28px;
+  color: var(--up);
+  margin-top: 4px;
+}
 
 .next-match.is-live{
   background: linear-gradient(135deg, rgba(72,217,122,0.16), rgba(72,217,122,0.02));
@@ -819,6 +825,27 @@ function wireTabs(){
 /* ---------- NEXT MATCH ---------- */
 const MATCH_DURATION_MIN = 110; // durée probable (90 min + pause + arrêts de jeu)
 
+let liveScoreCache = null;     // dernier score connu {key, status, elapsed, goalsHome, goalsAway}
+let liveScoreFetchedAt = 0;
+
+async function fetchLiveScore(live){
+  const key = live.label + "_" + live.datetime;
+  const [home, away] = live.label.split(" - ");
+  const date = new Date(live.datetime).toISOString().slice(0, 10); // l'API indexe par date UTC
+  try{
+    const r = await fetch(`/api/live-match?home=${encodeURIComponent(home)}&away=${encodeURIComponent(away)}&date=${date}`);
+    const data = await r.json();
+    if(data.found){
+      liveScoreCache = { key, status: data.status, elapsed: data.elapsed, goalsHome: data.goalsHome, goalsAway: data.goalsAway };
+    } else {
+      liveScoreCache = { key, status: null };
+    }
+  }catch(e){
+    liveScoreCache = { key, status: null };
+  }
+  liveScoreFetchedAt = Date.now();
+}
+
 function renderNextMatch(){
   const card = document.getElementById("nextMatchCard");
   const upcoming = UPCOMING_MATCHES.map(m=>({...m, d:new Date(m.datetime)})).sort((a,b)=>a.d-b.d);
@@ -831,13 +858,31 @@ function renderNextMatch(){
     if(live){
       const elapsedMin = Math.floor((now - live.d) / 60000);
       card.classList.add("is-live");
+
+      const liveKey = live.label + "_" + live.datetime;
+      if(!liveScoreFetchedAt || liveScoreCache?.key !== liveKey || Date.now() - liveScoreFetchedAt > 60000){
+        fetchLiveScore(live);
+      }
+
+      let scoreLine = "";
+      let clockValue = `${Math.min(elapsedMin, 90)}'`;
+      let clockLabel = "environ";
+      if(liveScoreCache && liveScoreCache.key === liveKey && liveScoreCache.status){
+        const s = liveScoreCache.status;
+        if(s === "HT"){ clockValue = "MT"; clockLabel = "mi-temps"; }
+        else if(s === "FT" || s === "AET" || s === "PEN"){ clockValue = "FIN"; clockLabel = "terminé"; }
+        else if(liveScoreCache.elapsed != null){ clockValue = liveScoreCache.elapsed + "'"; clockLabel = "en direct"; }
+        scoreLine = `<div class="nm-score-live">${liveScoreCache.goalsHome ?? 0} - ${liveScoreCache.goalsAway ?? 0}</div>`;
+      }
+
       card.innerHTML = `
         <div>
           <div class="nm-label live"><span class="live-dot"></span>En cours &middot; Groupe ${live.group}</div>
           <div class="nm-teams">${live.label}</div>
+          ${scoreLine}
           <div class="nm-time">Coup d'envoi à ${live.d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}</div>
         </div>
-        <div class="nm-live-clock"><span>${Math.min(elapsedMin, 90)}'</span><label>environ</label></div>`;
+        <div class="nm-live-clock"><span>${clockValue}</span><label>${clockLabel}</label></div>`;
       return true;
     }
     card.classList.remove("is-live");
