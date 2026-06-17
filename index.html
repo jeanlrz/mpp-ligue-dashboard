@@ -24,19 +24,19 @@ const LEAGUE_DATA = {
   updatedLabel: "17 juin 2026",
   dates: ["12/06", "13/06", "14/06", "15/06", "16/06", "17/06"],
   players: [
-    { name: "Maxime",    pseudo: "GOAT#UE2LBTD9", br: 9,  se: 3, history: [49, 123, 328, 523, 668, 756], joker: "Irak - Norvège" },
+    { name: "Maxime",    pseudo: "GOAT#UE2LBTD9", br: 9,  se: 3, history: [49, 123, 328, 523, 668, 756], joker: { match: "Irak - Norvège", won: false } },
     { name: "Gabriel",   pseudo: "Gaby-scz",      br: 11, se: 2, history: [145, 219, 313, 523, 639, 796] },
     { name: "Jean",      pseudo: "Trisomie21",    br: 10, se: 4, history: [69, 69, 235, 457, 599, 760] },
     { name: "Paul",      pseudo: "Chikago_Boule", br: 10, se: 3, history: [69, 69, 113, 351, 496, 683] },
     { name: "Alban",     pseudo: "Alban#3JA93",   br: 9,  se: 3, history: [69, 69, 255, 493, 493, 637] },
-    { name: "Cassandra", pseudo: "CASSCDA",       br: 10, se: 3, history: [49, 186, 230, 455, 455, 692], joker: "Irak - Norvège" },
-    { name: "Lola",      pseudo: "Lola-om",       br: 10, se: 0, history: [96, 170, 214, 409, 409, 566], joker: "Canada - Bosnie" },
+    { name: "Cassandra", pseudo: "CASSCDA",       br: 10, se: 3, history: [49, 186, 230, 455, 455, 692], joker: { match: "Irak - Norvège", won: true } },
+    { name: "Lola",      pseudo: "Lola-om",       br: 10, se: 0, history: [96, 170, 214, 409, 409, 566], joker: { match: "Canada - Bosnie", won: false } },
     { name: "Dorian",    pseudo: "Dodoskante",    br: 10, se: 1, history: [165, 165, 209, 404, 404, 561] },
     { name: "Candice",   pseudo: "candicefcn",    br: 9,  se: 0, history: [49, 49, 93, 288, 404, 523] },
     { name: "Auriane",   pseudo: "Auriane_chd",   br: 10, se: 1, history: [49, 123, 167, 254, 399, 556] },
     { name: "Romane",    pseudo: "romane_gblld",  br: 8,  se: 0, history: [49, 123, 167, 254, 370, 446] },
     { name: "Clara",     pseudo: "Claribo",       br: 9,  se: 0, history: [49, 49, 175, 370, 370, 527] },
-    { name: "David",     pseudo: "Alon-Snow",     br: 8,  se: 1, history: [49, 123, 123, 333, 333, 490], joker: "Belgique - Égypte" },
+    { name: "David",     pseudo: "Alon-Snow",     br: 8,  se: 1, history: [49, 123, 123, 333, 333, 490], joker: { match: "Belgique - Égypte", won: false } },
     { name: "Marine",    pseudo: "marinedrd",     br: 9,  se: 0, history: [49, 123, 167, 182, 298, 455] },
     { name: "Justine",   pseudo: "Juvy",          br: 7,  se: 1, history: [69, 143, 143, 158, 158, 315] },
     { name: "Morgane",   pseudo: "Morgane-sco",   br: 4,  se: 0, history: [0, 0, 0, 15, 15, 134] }
@@ -584,11 +584,15 @@ img.avatar{ object-fit: cover; }
   color: var(--up);
   border: 1px solid rgba(72,217,122,0.4);
 }
-.joker-badge.used{
-  background: rgba(127,127,127,0.10);
-  color: var(--text-faint);
-  border: 1px solid var(--line);
-  text-decoration: line-through;
+.joker-badge.won{
+  background: rgba(72,217,122,0.16);
+  color: var(--up);
+  border: 1px solid rgba(72,217,122,0.4);
+}
+.joker-badge.lost{
+  background: rgba(232,84,84,0.12);
+  color: var(--down);
+  border: 1px solid rgba(232,84,84,0.35);
 }
 .joker-badge::after{
   content: attr(data-tip);
@@ -1118,7 +1122,9 @@ function renderBoard(players){
         ${avatarHtml(p)}
         <div class="nm">${p.pseudo ? `${p.pseudo} <span class="nm-real">(${p.name})</span>` : p.name}</div>
         ${p.joker
-          ? `<span class="joker-badge used" data-tip="×2 utilisé sur ${p.joker}">×2</span>`
+          ? (p.joker.won
+              ? `<span class="joker-badge won" data-tip="×2 réussi sur ${p.joker.match}">×2 ✓</span>`
+              : `<span class="joker-badge lost" data-tip="×2 raté sur ${p.joker.match}">×2 ✗</span>`)
           : `<span class="joker-badge avail" data-tip="Joker ×2 encore disponible">×2</span>`}
       </div>
       <div class="stat">${p.br}</div>
