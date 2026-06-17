@@ -24,19 +24,19 @@ const LEAGUE_DATA = {
   updatedLabel: "17 juin 2026",
   dates: ["12/06", "13/06", "14/06", "15/06", "16/06", "17/06"],
   players: [
-    { name: "Maxime",    pseudo: "GOAT#UE2LBTD9", br: 9,  se: 3, history: [49, 123, 328, 523, 668, 706] },
+    { name: "Maxime",    pseudo: "GOAT#UE2LBTD9", br: 9,  se: 3, history: [49, 123, 328, 523, 668, 706], joker: "Irak - Norvège" },
     { name: "Gabriel",   pseudo: "Gaby-scz",      br: 11, se: 2, history: [145, 219, 313, 523, 639, 796] },
     { name: "Jean",      pseudo: "Trisomie21",    br: 10, se: 4, history: [69, 69, 235, 457, 599, 710] },
     { name: "Paul",      pseudo: "Chikago_Boule", br: 10, se: 3, history: [69, 69, 113, 351, 496, 683] },
     { name: "Alban",     pseudo: "Alban#3JA93",   br: 9,  se: 3, history: [69, 69, 255, 493, 493, 637] },
-    { name: "Cassandra", pseudo: "CASSCDA",       br: 10, se: 3, history: [49, 186, 230, 455, 455, 642] },
-    { name: "Lola",      pseudo: "Lola-om",       br: 10, se: 0, history: [96, 170, 214, 409, 409, 566] },
+    { name: "Cassandra", pseudo: "CASSCDA",       br: 10, se: 3, history: [49, 186, 230, 455, 455, 642], joker: "Irak - Norvège" },
+    { name: "Lola",      pseudo: "Lola-om",       br: 10, se: 0, history: [96, 170, 214, 409, 409, 566], joker: "Canada - Bosnie" },
     { name: "Dorian",    pseudo: "Dodoskante",    br: 10, se: 1, history: [165, 165, 209, 404, 404, 561] },
     { name: "Candice",   pseudo: "candicefcn",    br: 9,  se: 0, history: [49, 49, 93, 288, 404, 523] },
     { name: "Auriane",   pseudo: "Auriane_chd",   br: 10, se: 1, history: [49, 123, 167, 254, 399, 556] },
     { name: "Romane",    pseudo: "romane_gblld",  br: 8,  se: 0, history: [49, 123, 167, 254, 370, 446] },
     { name: "Clara",     pseudo: "Claribo",       br: 9,  se: 0, history: [49, 49, 175, 370, 370, 527] },
-    { name: "David",     pseudo: "Alon-Snow",     br: 8,  se: 1, history: [49, 123, 123, 333, 333, 490] },
+    { name: "David",     pseudo: "Alon-Snow",     br: 8,  se: 1, history: [49, 123, 123, 333, 333, 490], joker: "Belgique - Égypte" },
     { name: "Marine",    pseudo: "marinedrd",     br: 9,  se: 0, history: [49, 123, 167, 182, 298, 455] },
     { name: "Justine",   pseudo: "Juvy",          br: 7,  se: 1, history: [69, 143, 143, 158, 158, 315] },
     { name: "Morgane",   pseudo: "Morgane-sco",   br: 4,  se: 0, history: [0, 0, 0, 15, 15, 134] }
@@ -566,6 +566,28 @@ img.avatar{ object-fit: cover; }
   color: var(--text-faint);
   font-size: 14px;
 }
+.joker-badge{
+  font-family:'Anton', sans-serif;
+  font-size: 11px;
+  line-height:1;
+  padding: 3px 6px 2px;
+  border-radius: 6px;
+  margin-left: 8px;
+  flex-shrink:0;
+  letter-spacing: 0.02em;
+  cursor: default;
+}
+.joker-badge.avail{
+  background: rgba(72,217,122,0.16);
+  color: var(--up);
+  border: 1px solid rgba(72,217,122,0.4);
+}
+.joker-badge.used{
+  background: rgba(127,127,127,0.10);
+  color: var(--text-faint);
+  border: 1px solid var(--line);
+  text-decoration: line-through;
+}
 .stat{
   text-align:center;
   font-size: 15px;
@@ -1069,6 +1091,9 @@ function renderBoard(players){
       <div class="pname-cell">
         ${avatarHtml(p)}
         <div class="nm">${p.pseudo ? `${p.pseudo} <span class="nm-real">(${p.name})</span>` : p.name}</div>
+        ${p.joker
+          ? `<span class="joker-badge used" title="Joker ×2 déjà utilisé sur ${p.joker}">×2</span>`
+          : `<span class="joker-badge avail" title="Joker ×2 encore disponible">×2</span>`}
       </div>
       <div class="stat">${p.br}</div>
       <div class="stat se">${p.se}</div>
