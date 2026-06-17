@@ -20,25 +20,25 @@
 */
 const LEAGUE_DATA = {
   leagueName: "Com d'Artisans",
-  updatedLabel: "16 juin 2026",
-  dates: ["12/06", "13/06", "14/06", "15/06", "16/06"],
+  updatedLabel: "17 juin 2026",
+  dates: ["12/06", "13/06", "14/06", "15/06", "16/06", "17/06"],
   players: [
-    { name: "Maxime",    br: 8, se: 2, history: [49, 123, 328, 523, 668] },
-    { name: "Gabriel",   br: 7, se: 2, history: [145, 219, 313, 523, 639] },
-    { name: "Jean",      br: 7, se: 3, history: [69, 69, 235, 457, 599] },
-    { name: "Paul",      br: 6, se: 2, history: [69, 69, 113, 351, 496] },
-    { name: "Alban",     br: 6, se: 2, history: [69, 69, 255, 493, 493] },
-    { name: "Cassandra", br: 6, se: 2, history: [49, 186, 230, 455, 455] },
-    { name: "Lola",      br: 6, se: 0, history: [96, 170, 214, 409, 409] },
-    { name: "Dorian",    br: 6, se: 1, history: [165, 165, 209, 404, 404] },
-    { name: "Candice",   br: 6, se: 0, history: [49, 49, 93, 288, 404] },
-    { name: "Auriane",   br: 6, se: 1, history: [49, 123, 167, 254, 399] },
-    { name: "Romane",    br: 6, se: 0, history: [49, 123, 167, 254, 370] },
-    { name: "Clara",     br: 5, se: 0, history: [49, 49, 175, 370, 370] },
-    { name: "David",     br: 4, se: 1, history: [49, 123, 123, 333, 333] },
-    { name: "Marine",    br: 5, se: 0, history: [49, 123, 167, 182, 298] },
-    { name: "Justine",   br: 3, se: 1, history: [69, 143, 143, 158, 158] },
-    { name: "Morgane",   br: 1, se: 0, history: [0, 0, 0, 15, 15] }
+    { name: "Maxime",    br: 12, se: 3, history: [49, 123, 328, 523, 668, 855] },
+    { name: "Gabriel",   br: 11, se: 2, history: [145, 219, 313, 523, 639, 796] },
+    { name: "Jean",      br: 10, se: 4, history: [69, 69, 235, 457, 599, 710] },
+    { name: "Paul",      br: 10, se: 2, history: [69, 69, 113, 351, 496, 653] },
+    { name: "Alban",     br: 9,  se: 3, history: [69, 69, 255, 493, 493, 637] },
+    { name: "Cassandra", br: 10, se: 3, history: [49, 186, 230, 455, 455, 642] },
+    { name: "Lola",      br: 10, se: 0, history: [96, 170, 214, 409, 409, 566] },
+    { name: "Dorian",    br: 10, se: 1, history: [165, 165, 209, 404, 404, 561] },
+    { name: "Candice",   br: 9,  se: 0, history: [49, 49, 93, 288, 404, 523] },
+    { name: "Auriane",   br: 10, se: 1, history: [49, 123, 167, 254, 399, 556] },
+    { name: "Romane",    br: 8,  se: 0, history: [49, 123, 167, 254, 370, 446] },
+    { name: "Clara",     br: 9,  se: 0, history: [49, 49, 175, 370, 370, 527] },
+    { name: "David",     br: 5,  se: 2, history: [49, 123, 123, 333, 333, 371] },
+    { name: "Marine",    br: 9,  se: 0, history: [49, 123, 167, 182, 298, 455] },
+    { name: "Justine",   br: 7,  se: 1, history: [69, 143, 143, 158, 158, 315] },
+    { name: "Morgane",   br: 4,  se: 0, history: [0, 0, 0, 15, 15, 134] }
   ]
 };
 
@@ -60,15 +60,15 @@ const MATCHES_PLAYED = [
   { date: "2026-06-15", label: "Espagne - Cap-Vert",         score: "0-0", points: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], exact: null },
   { date: "2026-06-15", label: "Belgique - Égypte",          score: "1-1", points: [0,0,142,0,0,0,0,0,0,0,0,0,0,0,0,0], exact: 142 },
   { date: "2026-06-15", label: "Arabie Saoudite - Uruguay",  score: "1-1", points: [145,0,0,145,0,0,0,0,0,145,0,0,0,0,0,0], exact: 145 },
-  { date: "2026-06-15", label: "Iran - Nouvelle-Zélande",    score: "2-2", points: [0,116,0,0,0,0,0,0,116,0,116,0,0,116,0,0], exact: null }
+  { date: "2026-06-15", label: "Iran - Nouvelle-Zélande",    score: "2-2", points: [0,116,0,0,0,0,0,0,116,0,116,0,0,116,0,0], exact: null },
+  { date: "2026-06-16", label: "France - Sénégal",          score: "3-1", points: [76,46,0,46,76,46,46,46,46,46,46,46,0,46,46,46], exact: 76 },
+  { date: "2026-06-17", label: "Irak - Norvège",            score: "1-4", points: [30,30,30,30,30,60,30,30,30,30,30,30,0,30,30,30], exact: null },
+  { date: "2026-06-17", label: "Argentine - Algérie",       score: "3-0", points: [43,43,43,43,0,43,43,43,43,43,0,43,0,43,43,43], exact: null },
+  { date: "2026-06-17", label: "Autriche - Jordanie",       score: "3-1", points: [38,38,38,38,38,38,38,38,0,38,0,38,38,38,38,0], exact: null }
 ];
 
 /* Calendrier à venir (heure française). Complète au fur et à mesure des journées. */
 const UPCOMING_MATCHES = [
-  { datetime: "2026-06-16T21:00:00+02:00", label: "France - Sénégal",        group: "I" },
-  { datetime: "2026-06-17T00:00:00+02:00", label: "Irak - Norvège",          group: "I" },
-  { datetime: "2026-06-17T03:00:00+02:00", label: "Argentine - Algérie",     group: "J" },
-  { datetime: "2026-06-17T06:00:00+02:00", label: "Autriche - Jordanie",     group: "J" },
   { datetime: "2026-06-17T19:00:00+02:00", label: "Portugal - Congo",        group: "K" },
   { datetime: "2026-06-17T22:00:00+02:00", label: "Angleterre - Croatie",    group: "L" },
   { datetime: "2026-06-18T01:00:00+02:00", label: "Ghana - Panama",          group: "L" },
