@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/jpeg" href="favicon.jpg">
 
 <script>
 /* ============================================================
@@ -1190,14 +1191,14 @@ function renderHistoriqueTables(sortedPlayers){
   const ranksByDate = [];
   for(let d=0; d<DATA.dates.length; d++) ranksByDate.push(rankOf(DATA.players.map(p => p.history[d])));
 
-  let ptsHtml = '<table class="data-table"><thead><tr><th>Joueur</th>' + DATA.dates.map(d=>`<th>${d}</th>`).join("") + '</tr></thead><tbody>';
+  let ptsHtml = '<table class="data-table"><thead><tr><th style="text-align:left">Joueur</th>' + DATA.dates.map(d=>`<th>${d}</th>`).join("") + '</tr></thead><tbody>';
   sortedPlayers.forEach(p=>{
     ptsHtml += '<tr><td class="rh-name">'+p.name+'</td>' + p.history.map(v=>`<td>${v}</td>`).join("") + '</tr>';
   });
   ptsHtml += '</tbody></table>';
   document.getElementById("histPoints").innerHTML = ptsHtml;
 
-  let rkHtml = '<table class="data-table"><thead><tr><th>Joueur</th>' + DATA.dates.map(d=>`<th>${d}</th>`).join("") + '</tr></thead><tbody>';
+  let rkHtml = '<table class="data-table"><thead><tr><th style="text-align:left">Joueur</th>' + DATA.dates.map(d=>`<th>${d}</th>`).join("") + '</tr></thead><tbody>';
   sortedPlayers.forEach(p=>{
     rkHtml += '<tr><td class="rh-name">'+p.name+'</td>' + ranksByDate.map(row=>`<td>${row[p.idx]}</td>`).join("") + '</tr>';
   });
@@ -1211,7 +1212,7 @@ function formatShortDate(iso){
   return d.toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit" });
 }
 function renderMatchs(){
-  let html = '<table class="data-table"><thead><tr><th>Date</th><th>Match</th><th>Score</th>'
+  let html = '<table class="data-table"><thead><tr><th>Date</th><th style="text-align:left">Match</th><th>Score</th>'
     + DATA.players.map(p=>`<th>${p.name}</th>`).join("") + '</tr></thead><tbody>';
   MATCHES_PLAYED.forEach(m=>{
     html += '<tr><td>'+formatShortDate(m.date)+'</td><td class="m-label">'+m.label+'</td><td class="m-score">'+m.score+'</td>'
