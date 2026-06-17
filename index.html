@@ -1273,7 +1273,7 @@ function formatShortDate(iso){
 function renderMatchs(){
   let html = '<table class="data-table"><thead><tr><th>Date</th><th style="text-align:left">Match</th><th>Score</th>'
     + DATA.players.map(p=>`<th>${p.name}</th>`).join("") + '</tr></thead><tbody>';
-  MATCHES_PLAYED.forEach(m=>{
+  [...MATCHES_PLAYED].reverse().forEach(m=>{
     html += '<tr><td>'+formatShortDate(m.date)+'</td><td class="m-label">'+m.label+'</td><td class="m-score">'+m.score+'</td>'
       + m.points.map((v, idx) => {
           const isExact = m.exacts && m.exacts.includes(idx);
