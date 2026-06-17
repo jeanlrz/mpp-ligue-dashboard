@@ -24,7 +24,7 @@ const LEAGUE_DATA = {
   updatedLabel: "17 juin 2026",
   dates: ["12/06", "13/06", "14/06", "15/06", "16/06", "17/06"],
   players: [
-    { name: "Maxime",    pseudo: "GOAT#UE2LBTD9", br: 9,  se: 3, history: [49, 123, 328, 523, 668, 706], joker: "Irak - Norvège" },
+    { name: "Maxime",    pseudo: "GOAT#UE2LBTD9", br: 9,  se: 3, history: [49, 123, 328, 523, 668, 756], joker: "Irak - Norvège" },
     { name: "Gabriel",   pseudo: "Gaby-scz",      br: 11, se: 2, history: [145, 219, 313, 523, 639, 796] },
     { name: "Jean",      pseudo: "Trisomie21",    br: 10, se: 4, history: [69, 69, 235, 457, 599, 760] },
     { name: "Paul",      pseudo: "Chikago_Boule", br: 10, se: 3, history: [69, 69, 113, 351, 496, 683] },
@@ -68,7 +68,7 @@ const MATCHES_PLAYED = [
   { date: "2026-06-16", label: "France - Sénégal",          score: "3-1", points: [0,46,0,76,76,46,46,46,46,46,46,46,46,46,46,46], exacts: [3,4] },
   { date: "2026-06-17", label: "Irak - Norvège",            score: "1-4", points: [0,30,30,30,30,60,30,30,30,30,30,30,30,30,30,30], exacts: [] },
   { date: "2026-06-17", label: "Argentine - Algérie",       score: "3-0", points: [0,43,93,43,0,93,43,43,43,43,0,43,43,43,43,43], exacts: [2,5] },
-  { date: "2026-06-17", label: "Autriche - Jordanie",       score: "3-1", points: [38,38,38,38,38,38,38,38,0,38,0,38,38,38,38,0], exacts: [0] }
+  { date: "2026-06-17", label: "Autriche - Jordanie",       score: "3-1", points: [88,38,38,38,38,38,38,38,0,38,0,38,38,38,38,0], exacts: [0] }
 ];
 
 /* Calendrier à venir (heure française). Complète au fur et à mesure des journées. */
@@ -567,10 +567,12 @@ img.avatar{ object-fit: cover; }
   font-size: 14px;
 }
 .joker-badge{
-  font-family:'Anton', sans-serif;
-  font-size: 11px;
+  position: relative;
+  font-family:'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
   line-height:1;
-  padding: 3px 6px 2px;
+  padding: 3px 7px 2px;
   border-radius: 6px;
   margin-left: 8px;
   flex-shrink:0;
@@ -588,6 +590,30 @@ img.avatar{ object-fit: cover; }
   border: 1px solid var(--line);
   text-decoration: line-through;
 }
+.joker-badge::after{
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-family:'Barlow Condensed', sans-serif;
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--text);
+  box-shadow: var(--shadow-deep);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s;
+  z-index: 20;
+}
+.joker-badge:hover::after{ opacity: 1; }
 .stat{
   text-align:center;
   font-size: 15px;
@@ -1092,8 +1118,8 @@ function renderBoard(players){
         ${avatarHtml(p)}
         <div class="nm">${p.pseudo ? `${p.pseudo} <span class="nm-real">(${p.name})</span>` : p.name}</div>
         ${p.joker
-          ? `<span class="joker-badge used" title="Joker ×2 déjà utilisé sur ${p.joker}">×2</span>`
-          : `<span class="joker-badge avail" title="Joker ×2 encore disponible">×2</span>`}
+          ? `<span class="joker-badge used" data-tip="×2 utilisé sur ${p.joker}">×2</span>`
+          : `<span class="joker-badge avail" data-tip="Joker ×2 encore disponible">×2</span>`}
       </div>
       <div class="stat">${p.br}</div>
       <div class="stat se">${p.se}</div>
