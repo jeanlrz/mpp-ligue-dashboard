@@ -43,6 +43,9 @@ const LEAGUE_DATA = {
   ]
 };
 
+/* Gazette du jour — image à afficher/télécharger. Mettre à jour `file` + `label` à chaque nouvelle édition. */
+const GAZETTE = { file: "gazette/gazette-1706.jpg", label: "Bilan de la nuit du 17 juin" };
+
 /* Détail match par match — un point par joueur, MÊME ORDRE que LEAGUE_DATA.players.
    Ajouter une ligne ici à chaque nouveau match joué. */
 /* "exacts" = indices des joueurs (ordre LEAGUE_DATA.players) ayant trouvé le score EXACT.
@@ -259,6 +262,72 @@ h1.title{
   70%{ box-shadow:0 0 0 8px rgba(184,140,255,0); }
   100%{ box-shadow:0 0 0 0 rgba(184,140,255,0); }
 }
+
+/* ---------------- GAZETTE ---------------- */
+.gazette-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:14px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  cursor:pointer;
+  background: linear-gradient(135deg, var(--gold,#e8b84b), #c8902a);
+  border: 1px solid rgba(255,255,255,0.18);
+  color:#1a1407;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight:700;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+  box-shadow: 0 6px 18px rgba(200,144,42,0.28);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.gazette-btn:hover{ transform: translateY(-1px); box-shadow: 0 9px 24px rgba(200,144,42,0.4); }
+.gazette-btn:active{ transform: translateY(0); }
+.gazette-modal{
+  position:fixed; inset:0; z-index:200;
+  display:none;
+  align-items:center; justify-content:center;
+  padding: 28px 16px;
+}
+.gazette-modal.open{ display:flex; }
+.gazette-backdrop{
+  position:absolute; inset:0;
+  background: rgba(8,6,14,0.78);
+  backdrop-filter: blur(3px);
+}
+.gazette-dialog{
+  position:relative; z-index:1;
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  max-height: 92vh;
+}
+.gazette-img{
+  max-width: min(92vw, 560px);
+  max-height: 78vh;
+  width:auto; height:auto;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+.gazette-close{
+  position:absolute; top:-14px; right:-14px;
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size:22px; line-height:1; cursor:pointer;
+  box-shadow: var(--shadow-deep);
+}
+.gazette-dl{
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 10px 22px; border-radius:999px;
+  background: linear-gradient(135deg, var(--gold,#e8b84b), #c8902a);
+  color:#1a1407; text-decoration:none;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:16px; font-weight:700; letter-spacing:0.03em; text-transform:uppercase;
+  box-shadow: 0 6px 18px rgba(200,144,42,0.28);
+}
+.gazette-dl:hover{ filter:brightness(1.05); }
 
 /* ---------------- NEXT MATCH ---------------- */
 .next-match{
@@ -817,7 +886,17 @@ footer{
     <h1 class="title">LIGUE MPP</h1>
     <div class="subtitle">Ligue <b id="leagueNameOut"></b> &middot; 16 collègues, un seul trône</div>
     <div class="updated-chip"><span class="dot"></span><span id="updatedOut"></span></div>
+    <button class="gazette-btn" id="gazetteBtn" type="button">📰 Télécharger la gazette du jour</button>
   </header>
+
+  <div class="gazette-modal" id="gazetteModal" aria-hidden="true">
+    <div class="gazette-backdrop" data-close></div>
+    <div class="gazette-dialog">
+      <button class="gazette-close" id="gazetteClose" type="button" aria-label="Fermer">×</button>
+      <img class="gazette-img" id="gazetteImg" alt="La Gazette du jour">
+      <a class="gazette-dl" id="gazetteDl" download>⬇ Télécharger l'image</a>
+    </div>
+  </div>
 
   <div class="next-match" id="nextMatchCard"></div>
 
@@ -1088,6 +1167,28 @@ function renderHeader(){
   document.getElementById("updatedOut").textContent = "Mis à jour le " + DATA.updatedLabel;
 }
 
+function renderGazette(){
+  const btn = document.getElementById("gazetteBtn");
+  const modal = document.getElementById("gazetteModal");
+  if(!btn || !modal || typeof GAZETTE === "undefined" || !GAZETTE.file){
+    if(btn) btn.style.display = "none";
+    return;
+  }
+  const img = document.getElementById("gazetteImg");
+  const dl = document.getElementById("gazetteDl");
+  const dlName = GAZETTE.file.split("/").pop();
+  img.src = GAZETTE.file;
+  img.alt = GAZETTE.label || "La Gazette du jour";
+  dl.href = GAZETTE.file;
+  dl.setAttribute("download", dlName);
+  const open = () => { modal.classList.add("open"); modal.setAttribute("aria-hidden","false"); };
+  const close = () => { modal.classList.remove("open"); modal.setAttribute("aria-hidden","true"); };
+  btn.addEventListener("click", open);
+  document.getElementById("gazetteClose").addEventListener("click", close);
+  modal.querySelectorAll("[data-close]").forEach(el => el.addEventListener("click", close));
+  document.addEventListener("keydown", e => { if(e.key === "Escape") close(); });
+}
+
 function renderPodium(players){
   const top3 = players.slice(0,3);
   const medals = ["🥇","🥈","🥉"];
@@ -1329,6 +1430,7 @@ function wireInteractions(){
 function init(){
   wireTabs();
   renderHeader();
+  renderGazette();
   renderNextMatch();
 
   const players = computeFrame();
