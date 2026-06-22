@@ -45,6 +45,8 @@ const LEAGUE_DATA = {
 
 /* Archives des Gazettes — ajouter une entrée en tête à chaque nouvelle édition (la 1re = celle du jour). */
 const GAZETTES = [
+  { date: "2026-06-21", label: "Bilan de la nuit du 21 juin", file: "gazette/gazette-2106.jpg" },
+  { date: "2026-06-20", label: "Pas d'édition — repos dominical", repos: true },
   { date: "2026-06-19", label: "Bilan de la nuit du 19 juin", file: "gazette/gazette-1906.jpg" },
   { date: "2026-06-18", label: "Bilan de la nuit du 18 juin", file: "gazette/gazette-1806.jpg?v=2" },
   { date: "2026-06-17", label: "Bilan de la nuit du 17 juin", file: "gazette/gazette-1706.jpg" },
@@ -385,6 +387,22 @@ h1.title{
   font-size: 12.5px; font-weight:600;
   letter-spacing:0.04em; text-transform:uppercase;
   color: #c8902a;
+}
+.gazette-card.repos{
+  cursor: default;
+  border-style: dashed;
+  opacity: 0.85;
+}
+.gazette-card.repos:hover{ transform:none; box-shadow:none; border-color:var(--line); }
+.repos-thumb{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  background: repeating-linear-gradient(45deg, rgba(127,127,127,0.05), rgba(127,127,127,0.05) 10px, transparent 10px, transparent 20px);
+}
+.repos-emoji{ font-size:52px; line-height:1; opacity:0.7; }
+.repos-word{
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:20px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+  color: var(--text-faint);
 }
 
 /* ---------------- NEXT MATCH ---------------- */
@@ -1272,11 +1290,22 @@ function renderGazettesTab(){
     grid.innerHTML = `<div class="nm-empty">Aucune gazette pour l'instant ⚽</div>`;
     return;
   }
+  // "Dernière édition" = la 1re vraie gazette (on saute les jours de repos)
+  const latestIdx = list.findIndex(g => !g.repos);
   grid.innerHTML = list.map((g,i)=>{
     const d = new Date(g.date + "T12:00:00");
     const day = d.toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });
     const dayCap = day.charAt(0).toUpperCase() + day.slice(1);
-    const todayTag = i === 0 ? ' · <b style="color:#c8902a">Dernière édition</b>' : "";
+    if(g.repos){
+      return `<div class="gazette-card repos">
+        <div class="gazette-card-thumb repos-thumb"><span class="repos-emoji">😴</span><span class="repos-word">Relâche</span></div>
+        <div class="gazette-card-body">
+          <div class="gazette-card-day">${dayCap}</div>
+          <div class="gazette-card-label">${g.label||""}</div>
+        </div>
+      </div>`;
+    }
+    const todayTag = i === latestIdx ? ' · <b style="color:#c8902a">Dernière édition</b>' : "";
     return `<div class="gazette-card" data-file="${g.file}" data-label="${(g.label||"").replace(/"/g,"&quot;")}">
       <img class="gazette-card-thumb" src="${g.file}" alt="${(g.label||"Gazette").replace(/"/g,"&quot;")}" loading="lazy">
       <div class="gazette-card-body">
@@ -1286,7 +1315,7 @@ function renderGazettesTab(){
       </div>
     </div>`;
   }).join("");
-  grid.querySelectorAll(".gazette-card").forEach(card=>{
+  grid.querySelectorAll(".gazette-card:not(.repos)").forEach(card=>{
     card.addEventListener("click", ()=> openGazette(card.dataset.file, card.dataset.label));
   });
 }
