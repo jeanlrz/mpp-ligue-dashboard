@@ -62,3 +62,7 @@ Quand Jean fournit les **screenshots de résultats** de la nuit (app MPP), produ
 
 ## Image Gazette (workflow en 2 temps)
 Jean fabrique l'image « Ma Petite Gazette » À PARTIR du tableau de stats + de la Gazzetta (depuis un PSD qu'il garde de son côté), puis la fournit dans un 2e message. Intégration = mon job : copier le `.jpg` dans `gazette/`, ajouter une entrée EN TÊTE de `GAZETTES` (`{ date: "AAAA-MM-JJ", label: "Bilan de la nuit du JJ mois", file: "gazette/gazette-JJMM.jpg" }`), commit/push. Astuce cache : si on remplace une image existante, ajouter `?v=2` au `file` pour forcer le rafraîchissement (le nom de téléchargement strippe déjà la query).
+
+**Datation des gazettes** : une gazette est datée de la **nuit qu'elle couvre** (= date du 1er match de la fournée, soit la veille de la date du snapshot `updatedLabel`). Ex. : les matchs intégrés le matin du « 22 juin » couvrent la « nuit du 21 juin » → gazette `2106`.
+
+**Jour de repos (gazette sautée)** : si Jean ne fait pas la gazette un jour (ex. week-end), ajouter quand même une entrée à la bonne date avec `{ date: "AAAA-MM-JJ", label: "Pas d'édition — repos dominical", repos: true }` (pas de `file`). L'onglet Gazettes affiche alors une carte « 😴 Relâche » non cliquable, et le tag « Dernière édition » saute les jours de repos pour se poser sur la dernière vraie gazette.
