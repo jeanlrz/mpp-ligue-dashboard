@@ -479,6 +479,16 @@ h1.title{
   font-size: 28px;
   color: var(--up);
 }
+.nm-teams + .nm-teams{ margin-top: 3px; }
+.nm-live-match{
+  display:flex;
+  align-items:center;
+  gap: 16px;
+  margin-top: 4px;
+}
+.nm-live-match:first-of-type{ margin-top: 0; }
+.nm-live-match .nm-teams{ font-size: 20px; }
+.nm-live-match .nm-score-live{ font-size: 22px; margin-left:auto; }
 
 .next-match.is-live{
   background: linear-gradient(135deg, rgba(72,217,122,0.16), rgba(72,217,122,0.02));
@@ -1156,64 +1166,68 @@ function wireTabs(){
 /* ---------- NEXT MATCH ---------- */
 const MATCH_DURATION_MIN = 110; // durée probable (90 min + pause + arrêts de jeu)
 
-let liveScoreCache = null;     // dernier score connu {key, status, elapsed, goalsHome, goalsAway}
-let liveScoreFetchedAt = 0;
+const liveScores = {};   // key -> { status, elapsed, goalsHome, goalsAway, fetchedAt }
+const matchKey = m => m.label + "_" + m.datetime;
 
 async function fetchLiveScore(live){
-  const key = live.label + "_" + live.datetime;
+  const key = matchKey(live);
   const [home, away] = live.label.split(" - ");
   const date = new Date(live.datetime).toISOString().slice(0, 10); // l'API indexe par date UTC
   try{
     const r = await fetch(`/api/live-match?home=${encodeURIComponent(home)}&away=${encodeURIComponent(away)}&date=${date}`);
     const data = await r.json();
-    if(data.found){
-      liveScoreCache = { key, status: data.status, elapsed: data.elapsed, goalsHome: data.goalsHome, goalsAway: data.goalsAway };
-    } else {
-      liveScoreCache = { key, status: null };
-    }
+    liveScores[key] = data.found
+      ? { status: data.status, elapsed: data.elapsed, goalsHome: data.goalsHome, goalsAway: data.goalsAway, fetchedAt: Date.now() }
+      : { status: null, fetchedAt: Date.now() };
   }catch(e){
-    liveScoreCache = { key, status: null };
+    liveScores[key] = { status: null, fetchedAt: Date.now() };
   }
-  liveScoreFetchedAt = Date.now();
 }
 
 function renderNextMatch(){
   const card = document.getElementById("nextMatchCard");
   const upcoming = UPCOMING_MATCHES.map(m=>({...m, d:new Date(m.datetime)})).sort((a,b)=>a.d-b.d);
 
+  // libellé de groupe partagé si tous les matchs sont dans le même groupe
+  const groupSuffix = list => list.every(m => m.group === list[0].group) ? ` &middot; Groupe ${list[0].group}` : "";
+
   function paint(){
     const now = new Date();
 
-    // un match est "en cours" entre son coup d'envoi et coup d'envoi + durée estimée
-    const live = upcoming.find(m => now >= m.d && now < new Date(m.d.getTime() + MATCH_DURATION_MIN*60000));
-    if(live){
-      const elapsedMin = Math.floor((now - live.d) / 60000);
+    // matchs "en cours" : entre coup d'envoi et coup d'envoi + durée estimée (peut y en avoir plusieurs en même temps)
+    const liveList = upcoming.filter(m => now >= m.d && now < new Date(m.d.getTime() + MATCH_DURATION_MIN*60000));
+    if(liveList.length){
       card.classList.add("is-live");
 
-      const liveKey = live.label + "_" + live.datetime;
-      if(!liveScoreFetchedAt || liveScoreCache?.key !== liveKey || Date.now() - liveScoreFetchedAt > 60000){
-        fetchLiveScore(live);
+      liveList.forEach(live => {
+        const c = liveScores[matchKey(live)];
+        if(!c || Date.now() - c.fetchedAt > 60000) fetchLiveScore(live);
+      });
+
+      // horloge partagée (les matchs simultanés ont le même temps de jeu)
+      const first = liveList[0];
+      const fc = liveScores[matchKey(first)];
+      let clockValue = `${Math.min(Math.floor((now - first.d)/60000), 90)}'`;
+      let clockLabel = "environ";
+      if(fc && fc.status){
+        if(fc.status === "HT"){ clockValue = "MT"; clockLabel = "mi-temps"; }
+        else if(fc.status === "FT" || fc.status === "AET" || fc.status === "PEN"){ clockValue = "FIN"; clockLabel = "terminé"; }
+        else if(fc.elapsed != null){ clockValue = fc.elapsed + "'"; clockLabel = "en direct"; }
       }
 
-      let scoreLine = "";
-      let clockValue = `${Math.min(elapsedMin, 90)}'`;
-      let clockLabel = "environ";
-      if(liveScoreCache && liveScoreCache.key === liveKey && liveScoreCache.status){
-        const s = liveScoreCache.status;
-        if(s === "HT"){ clockValue = "MT"; clockLabel = "mi-temps"; }
-        else if(s === "FT" || s === "AET" || s === "PEN"){ clockValue = "FIN"; clockLabel = "terminé"; }
-        else if(liveScoreCache.elapsed != null){ clockValue = liveScoreCache.elapsed + "'"; clockLabel = "en direct"; }
-        scoreLine = `<div class="nm-score-live">${liveScoreCache.goalsHome ?? 0} - ${liveScoreCache.goalsAway ?? 0}</div>`;
-      }
+      const matchesHtml = liveList.map(m => {
+        const c = liveScores[matchKey(m)];
+        const score = (c && c.status) ? `${c.goalsHome ?? 0} - ${c.goalsAway ?? 0}` : "–";
+        return `<div class="nm-live-match"><span class="nm-teams">${m.label}</span><span class="nm-score-live">${score}</span></div>`;
+      }).join("");
 
       card.innerHTML = `
         <div>
-          <div class="nm-label live"><span class="live-dot"></span>En cours &middot; Groupe ${live.group}</div>
-          <div class="nm-teams">${live.label}</div>
-          <div class="nm-time">Coup d'envoi à ${live.d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}</div>
+          <div class="nm-label live"><span class="live-dot"></span>En cours${groupSuffix(liveList)}</div>
+          ${matchesHtml}
+          <div class="nm-time">Coup d'envoi à ${first.d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"})}</div>
         </div>
         <div class="nm-live-right">
-          ${scoreLine}
           <div class="nm-live-clock"><span>${clockValue}</span><label>${clockLabel}</label></div>
         </div>`;
       return true;
@@ -1225,16 +1239,19 @@ function renderNextMatch(){
       card.innerHTML = `<div><div class="nm-label">Prochain match</div><div class="nm-empty">Calendrier à compléter ⚽</div></div>`;
       return false;
     }
+    // tous les matchs au même prochain coup d'envoi
+    const nextList = upcoming.filter(m => m.d.getTime() === next.d.getTime());
     let diff = Math.max(0, next.d - new Date());
     const days = Math.floor(diff/86400000); diff -= days*86400000;
     const hours = Math.floor(diff/3600000); diff -= hours*3600000;
     const mins = Math.floor(diff/60000); diff -= mins*60000;
     const secs = Math.floor(diff/1000);
     const dateLabel = next.d.toLocaleString("fr-FR", { weekday:"short", day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" });
+    const teamsHtml = nextList.map(m => `<div class="nm-teams">${m.label}</div>`).join("");
     card.innerHTML = `
       <div>
-        <div class="nm-label">Prochain match &middot; Groupe ${next.group}</div>
-        <div class="nm-teams">${next.label}</div>
+        <div class="nm-label">${nextList.length > 1 ? "Prochains matchs" : "Prochain match"}${groupSuffix(nextList)}</div>
+        ${teamsHtml}
         <div class="nm-time">${dateLabel}</div>
       </div>
       <div class="nm-countdown">
