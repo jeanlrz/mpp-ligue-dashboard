@@ -21,25 +21,25 @@
 */
 const LEAGUE_DATA = {
   leagueName: "Com d'Artisans",
-  updatedLabel: "30 juin 2026",
-  dates: ["12/06", "13/06", "14/06", "15/06", "16/06", "17/06", "18/06", "19/06", "20/06", "21/06", "22/06", "23/06", "24/06", "25/06", "26/06", "27/06", "28/06", "29/06", "30/06"],
+  updatedLabel: "1er juillet 2026",
+  dates: ["12/06", "13/06", "14/06", "15/06", "16/06", "17/06", "18/06", "19/06", "20/06", "21/06", "22/06", "23/06", "24/06", "25/06", "26/06", "27/06", "28/06", "29/06", "30/06", "01/07"],
   players: [
-    { name: "Maxime",    pseudo: "GOAT#UE2LBTD9", br: 44, se: 11, history: [49, 123, 328, 523, 668, 756, 873, 1201, 1401, 1597, 1787, 1892, 2022, 2304, 2413, 2758, 3045, 3045, 3130], joker: { match: "Irak - Norvège", won: false } },
-    { name: "Gabriel",   pseudo: "Gaby-scz",      br: 49, se: 9,  history: [145, 219, 313, 523, 639, 796, 933, 1199, 1348, 1544, 1634, 1850, 1987, 2380, 2489, 2823, 3160, 3224, 3309], joker: { match: "Japon - Suède", won: false } },
-    { name: "Jean",      pseudo: "Trisomie21",    br: 43, se: 8,  history: [69, 69, 235, 457, 599, 760, 936, 1083, 1253, 1382, 1522, 1694, 1754, 1990, 2119, 2453, 2580, 2694, 2808], joker: { match: "Pays-Bas - Suède", won: false } },
-    { name: "Paul",      pseudo: "Chikago_Boule", br: 44, se: 9,  history: [69, 69, 113, 351, 496, 683, 859, 1006, 1176, 1396, 1427, 1629, 1730, 1898, 2239, 2396, 2828, 2892, 3091], joker: { match: "Tunisie - Japon", won: true } },
-    { name: "Alban",     pseudo: "Alban#3JA93",   br: 37, se: 6,  history: [69, 69, 255, 493, 493, 637, 681, 960, 1072, 1201, 1341, 1493, 1553, 1717, 1980, 2159, 2286, 2350, 2350] },
-    { name: "Cassandra", pseudo: "CASSCDA",       br: 47, se: 11, history: [49, 186, 230, 455, 455, 692, 795, 1193, 1214, 1410, 1550, 1703, 1890, 2234, 2471, 2751, 3190, 3190, 3389], joker: { match: "Irak - Norvège", won: true } },
-    { name: "Lola",      pseudo: "Lola-om",       br: 44, se: 5,  history: [96, 170, 214, 409, 409, 566, 610, 826, 1016, 1175, 1265, 1511, 1571, 1809, 2130, 2287, 2471, 2535, 2734], joker: { match: "Canada - Bosnie", won: false } },
-    { name: "Dorian",    pseudo: "Dodoskante",    br: 45, se: 9,  history: [165, 165, 209, 404, 404, 561, 757, 902, 1072, 1298, 1298, 1470, 1607, 1863, 1992, 2326, 2580, 2644, 2843] },
-    { name: "Candice",   pseudo: "candicefcn",    br: 40, se: 4,  history: [49, 49, 93, 288, 404, 523, 567, 643, 813, 942, 1032, 1184, 1294, 1462, 1675, 2009, 2338, 2402, 2601], joker: { match: "Jordanie - Argentine", won: true } },
-    { name: "Auriane",   pseudo: "Auriane_chd",   br: 51, se: 11, history: [49, 123, 167, 254, 399, 556, 673, 889, 1079, 1305, 1395, 1691, 1828, 2083, 2316, 2650, 3089, 3153, 3372] },
-    { name: "Romane",    pseudo: "romane_gblld",  br: 47, se: 12, history: [49, 123, 167, 254, 370, 446, 549, 826, 1016, 1212, 1293, 1589, 1776, 2078, 2341, 2675, 2962, 3026, 3245] },
-    { name: "Clara",     pseudo: "Claribo",       br: 39, se: 8,  history: [49, 49, 175, 370, 370, 527, 527, 743, 855, 1103, 1243, 1445, 1546, 1764, 2021, 2382, 2503, 2567, 2632], joker: { match: "Turquie - Paraguay", won: false } },
-    { name: "David",     pseudo: "Alon-Snow",     br: 42, se: 5,  history: [49, 123, 123, 333, 333, 490, 607, 823, 1013, 1118, 1208, 1410, 1547, 1715, 1952, 2163, 2450, 2450, 2515], joker: { match: "Belgique - Égypte", won: false } },
-    { name: "Marine",    pseudo: "marinedrd",     br: 47, se: 5,  history: [49, 123, 167, 182, 298, 455, 558, 837, 916, 1045, 1135, 1337, 1474, 1729, 2070, 2538, 2807, 2871, 3050] },
-    { name: "Justine",   pseudo: "Juvy",          br: 42, se: 8,  history: [69, 143, 143, 158, 158, 315, 447, 726, 805, 910, 969, 1141, 1278, 1583, 1944, 2412, 2642, 2642, 2727] },
-    { name: "Morgane",   pseudo: "Morgane-sco",   br: 34, se: 8,  history: [0, 0, 0, 15, 15, 134, 237, 382, 552, 552, 583, 765, 952, 1146, 1512, 1857, 2061, 2061, 2146] }
+    { name: "Maxime",    pseudo: "GOAT#UE2LBTD9", br: 46, se: 12, history: [49, 123, 328, 523, 668, 756, 873, 1201, 1401, 1597, 1787, 1892, 2022, 2304, 2413, 2758, 3045, 3045, 3130, 3282], joker: { match: "Irak - Norvège", won: false } },
+    { name: "Gabriel",   pseudo: "Gaby-scz",      br: 52, se: 11, history: [145, 219, 313, 523, 639, 796, 933, 1199, 1348, 1544, 1634, 1850, 1987, 2380, 2489, 2823, 3160, 3224, 3309, 3556], joker: { match: "Japon - Suède", won: false } },
+    { name: "Jean",      pseudo: "Trisomie21",    br: 45, se: 8,  history: [69, 69, 235, 457, 599, 760, 936, 1083, 1253, 1382, 1522, 1694, 1754, 1990, 2119, 2453, 2580, 2694, 2808, 2930], joker: { match: "Pays-Bas - Suède", won: false } },
+    { name: "Paul",      pseudo: "Chikago_Boule", br: 47, se: 10, history: [69, 69, 113, 351, 496, 683, 859, 1006, 1176, 1396, 1427, 1629, 1730, 1898, 2239, 2396, 2828, 2892, 3091, 3308], joker: { match: "Tunisie - Japon", won: true } },
+    { name: "Alban",     pseudo: "Alban#3JA93",   br: 39, se: 7,  history: [69, 69, 255, 493, 493, 637, 681, 960, 1072, 1201, 1341, 1493, 1553, 1717, 1980, 2159, 2286, 2350, 2350, 2502] },
+    { name: "Cassandra", pseudo: "CASSCDA",       br: 50, se: 12, history: [49, 186, 230, 455, 455, 692, 795, 1193, 1214, 1410, 1550, 1703, 1890, 2234, 2471, 2751, 3190, 3190, 3389, 3616], joker: { match: "Irak - Norvège", won: true } },
+    { name: "Lola",      pseudo: "Lola-om",       br: 46, se: 6,  history: [96, 170, 214, 409, 409, 566, 610, 826, 1016, 1175, 1265, 1511, 1571, 1809, 2130, 2287, 2471, 2535, 2734, 2886], joker: { match: "Canada - Bosnie", won: false } },
+    { name: "Dorian",    pseudo: "Dodoskante",    br: 47, se: 9,  history: [165, 165, 209, 404, 404, 561, 757, 902, 1072, 1298, 1298, 1470, 1607, 1863, 1992, 2326, 2580, 2644, 2843, 2965] },
+    { name: "Candice",   pseudo: "candicefcn",    br: 42, se: 4,  history: [49, 49, 93, 288, 404, 523, 567, 643, 813, 942, 1032, 1184, 1294, 1462, 1675, 2009, 2338, 2402, 2601, 2723], joker: { match: "Jordanie - Argentine", won: true } },
+    { name: "Auriane",   pseudo: "Auriane_chd",   br: 54, se: 12, history: [49, 123, 167, 254, 399, 556, 673, 889, 1079, 1305, 1395, 1691, 1828, 2083, 2316, 2650, 3089, 3153, 3372, 3589] },
+    { name: "Romane",    pseudo: "romane_gblld",  br: 50, se: 13, history: [49, 123, 167, 254, 370, 446, 549, 826, 1016, 1212, 1293, 1589, 1776, 2078, 2341, 2675, 2962, 3026, 3245, 3462] },
+    { name: "Clara",     pseudo: "Claribo",       br: 41, se: 8,  history: [49, 49, 175, 370, 370, 527, 527, 743, 855, 1103, 1243, 1445, 1546, 1764, 2021, 2382, 2503, 2567, 2632, 2754], joker: { match: "Turquie - Paraguay", won: false } },
+    { name: "David",     pseudo: "Alon-Snow",     br: 45, se: 6,  history: [49, 123, 123, 333, 333, 490, 607, 823, 1013, 1118, 1208, 1410, 1547, 1715, 1952, 2163, 2450, 2450, 2515, 2732], joker: { match: "Belgique - Égypte", won: false } },
+    { name: "Marine",    pseudo: "marinedrd",     br: 50, se: 7,  history: [49, 123, 167, 182, 298, 455, 558, 837, 916, 1045, 1135, 1337, 1474, 1729, 2070, 2538, 2807, 2871, 3050, 3297] },
+    { name: "Justine",   pseudo: "Juvy",          br: 45, se: 10, history: [69, 143, 143, 158, 158, 315, 447, 726, 805, 910, 969, 1141, 1278, 1583, 1944, 2412, 2642, 2642, 2727, 2974] },
+    { name: "Morgane",   pseudo: "Morgane-sco",   br: 36, se: 8,  history: [0, 0, 0, 15, 15, 134, 237, 382, 552, 552, 583, 765, 952, 1146, 1512, 1857, 2061, 2061, 2146, 2259] }
   ]
 };
 
@@ -141,14 +141,14 @@ const MATCHES_PLAYED = [
   { date: "2026-06-28", label: "Afrique du Sud - Canada",   score: "0-1", points: [0,64,114,64,64,0,64,64,64,64,64,64,0,64,0,0], exacts: [2] },
   { date: "2026-06-29", label: "Brésil - Japon",           score: "2-1", points: [85,85,0,65,0,65,65,65,85,85,85,65,65,65,85,85], exacts: [0,1,8,9,10,14,15] },
   { date: "2026-06-29", label: "Allemagne - Paraguay",     score: "1-1", points: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], exacts: [] },
-  { date: "2026-06-30", label: "Pays-Bas - Maroc",         score: "1-1", points: [0,0,114,134,0,134,134,134,114,134,134,0,0,114,0,0], exacts: [3,5,6,7,9,10] }
+  { date: "2026-06-30", label: "Pays-Bas - Maroc",         score: "1-1", points: [0,0,114,134,0,134,134,134,114,134,134,0,0,114,0,0], exacts: [3,5,6,7,9,10] },
+  { date: "2026-06-30", label: "Côte d'Ivoire - Norvège", score: "1-2", points: [0,95,0,95,0,75,0,0,0,95,95,0,95,95,95,75], exacts: [1,3,9,10,12,13,14] },
+  { date: "2026-06-30", label: "France - Suède",          score: "3-0", points: [38,38,38,38,38,68,68,38,38,38,38,38,38,38,68,38], exacts: [5,6,14] },
+  { date: "2026-07-01", label: "Mexique - Équateur",      score: "2-0", points: [114,114,84,84,114,84,84,84,84,84,84,84,84,114,84,0], exacts: [0,1,4,13] }
 ];
 
 /* Calendrier à venir (heure française). Complète au fur et à mesure des journées. */
 const UPCOMING_MATCHES = [
-  { datetime: "2026-06-30T19:00:00+02:00", label: "Côte d'Ivoire - Norvège",  round: "16es de finale" },
-  { datetime: "2026-06-30T23:00:00+02:00", label: "France - Suède",           round: "16es de finale" },
-  { datetime: "2026-07-01T03:00:00+02:00", label: "Mexique - Équateur",       round: "16es de finale" },
   { datetime: "2026-07-01T18:00:00+02:00", label: "Angleterre - Congo",       round: "16es de finale" },
   { datetime: "2026-07-01T22:00:00+02:00", label: "Belgique - Sénégal",       round: "16es de finale" },
   { datetime: "2026-07-02T02:00:00+02:00", label: "USA - Bosnie",             round: "16es de finale" },
